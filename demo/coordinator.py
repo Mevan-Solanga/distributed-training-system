@@ -51,13 +51,26 @@ def start_worker(rank: int) -> subprocess.Popen:
     worker_path = project_root() / "demo" / "worker.py"
     print(f"[coord] starting worker rank={rank} (world_size={WORLD_SIZE}) pid=?")
 
-    # stdout/stderr inherit so you see all worker logs
+    # # stdout/stderr inherit so you see all worker logs
+    # return subprocess.Popen(
+    #     [sys.executable, str(worker_path)],
+    #     env=env,
+    #     stdout=sys.stdout,
+    #     stderr=sys.stderr,
+    # )
+
+    creationflags = 0
+    if os.name == "nt":
+        creationflags = subprocess.CREATE_NO_WINDOW
+
     return subprocess.Popen(
         [sys.executable, str(worker_path)],
         env=env,
         stdout=sys.stdout,
         stderr=sys.stderr,
+        creationflags=creationflags,
     )
+
 
 
 def main():

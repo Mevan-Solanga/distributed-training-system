@@ -1,0 +1,36 @@
+[worker 1] starting from step 0
+[worker 1] assigned 0 shard(s): []
+[worker 1] no shards assigned. Exiting.
+[worker 0] starting from step 0
+[worker 0] assigned 0 shard(s): []
+[worker 0] no shards assigned. Exiting.
+[worker 3] starting from step 0
+[worker 3] assigned 0 shard(s): []
+[worker 3] no shards assigned. Exiting.
+[worker 2] starting from step 0
+[worker 2] assigned 0 shard(s): []
+[worker 2] no shards assigned. Exiting.
+[coord] job=job-53b7d90f
+[coord] checkpoints=./checkpoints
+[coord] world_size=4
+[coord] starting worker rank=0 (world_size=4) pid=?
+[coord] worker rank=0 started pid=37820
+[coord] starting worker rank=1 (world_size=4) pid=?
+[coord] worker rank=1 started pid=37652
+[coord] starting worker rank=2 (world_size=4) pid=?
+[coord] worker rank=2 started pid=22132
+[coord] starting worker rank=3 (world_size=4) pid=?
+[coord] worker rank=3 started pid=9928
+
+[coord] worker rank=0 exited code=0
+[coord] rank=0 completed (exit 0). Marking DONE.
+
+[coord] worker rank=1 exited code=0
+[coord] rank=1 completed (exit 0). Marking DONE.
+
+[coord] worker rank=2 exited code=0
+[coord] rank=2 completed (exit 0). Marking DONE.
+
+[coord] worker rank=3 exited code=0
+[coord] rank=3 completed (exit 0). Marking DONE.
+[coord] all workers DONE. Job COMPLETED.

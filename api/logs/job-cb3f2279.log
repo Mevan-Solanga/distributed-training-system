@@ -1,0 +1,110 @@
+[worker 3] starting from step 0
+[worker 3] assigned 2 shard(s): ['shard_00003.txt', 'shard_00007.txt']
+[worker 3] resuming at shard_idx=0 line_idx=0 step=0
+[worker 3] step 1 | sample_id=150, shard=3 | (si=0 li=1)
+[worker 3] step 2 | sample_id=151, shard=3 | (si=0 li=2)
+[worker 3] step 3 | sample_id=152, shard=3 | (si=0 li=3)
+[worker 3] step 4 | sample_id=153, shard=3 | (si=0 li=4)
+[worker 3] step 5 | sample_id=154, shard=3 | (si=0 li=5)
+[worker 3] checkpointing at step 5
+[worker 3] step 6 | sample_id=155, shard=3 | (si=0 li=6)
+[worker 3] step 7 | sample_id=156, shard=3 | (si=0 li=7)
+[worker 3] step 8 | sample_id=157, shard=3 | (si=0 li=8)
+[worker 3] step 9 | sample_id=158, shard=3 | (si=0 li=9)
+[worker 3] step 10 | sample_id=159, shard=3 | (si=0 li=10)
+[worker 3] checkpointing at step 10
+[worker 3] step 11 | sample_id=160, shard=3 | (si=0 li=11)
+[worker 3] step 12 | sample_id=161, shard=3 | (si=0 li=12)
+[worker 3] step 13 | sample_id=162, shard=3 | (si=0 li=13)
+Traceback (most recent call last):
+[worker 2] starting from step 0
+[worker 2] assigned 2 shard(s): ['shard_00002.txt', 'shard_00006.txt']
+[worker 2] resuming at shard_idx=0 line_idx=0 step=0
+[worker 2] step 1 | sample_id=100, shard=2 | (si=0 li=1)
+[worker 2] step 2 | sample_id=101, shard=2 | (si=0 li=2)
+[worker 2] step 3 | sample_id=102, shard=2 | (si=0 li=3)
+[worker 2] step 4 | sample_id=103, shard=2 | (si=0 li=4)
+[worker 2] step 5 | sample_id=104, shard=2 | (si=0 li=5)
+[worker 2] checkpointing at step 5
+[worker 2] step 6 | sample_id=105, shard=2 | (si=0 li=6)
+[worker 2] step 7 | sample_id=106, shard=2 | (si=0 li=7)
+[worker 2] step 8 | sample_id=107, shard=2 | (si=0 li=8)
+[worker 2] step 9 | sample_id=108, shard=2 | (si=0 li=9)
+[worker 2] step 10 | sample_id=109, shard=2 | (si=0 li=10)
+[worker 2] checkpointing at step 10
+[worker 2] step 11 | sample_id=110, shard=2 | (si=0 li=11)
+[worker 2] step 12 | sample_id=111, shard=2 | (si=0 li=12)
+[worker 2] step 13 | sample_id=112, shard=2 | (si=0 li=13)
+[worker 1] starting from step 0
+[worker 1] assigned 2 shard(s): ['shard_00001.txt', 'shard_00005.txt']
+[worker 1] resuming at shard_idx=0 line_idx=0 step=0
+[worker 1] step 1 | sample_id=50, shard=1 | (si=0 li=1)
+[worker 1] step 2 | sample_id=51, shard=1 | (si=0 li=2)
+[worker 1] step 3 | sample_id=52, shard=1 | (si=0 li=3)
+[worker 1] step 4 | sample_id=53, shard=1 | (si=0 li=4)
+[worker 1] step 5 | sample_id=54, shard=1 | (si=0 li=5)
+[worker 1] checkpointing at step 5
+[worker 1] step 6 | sample_id=55, shard=1 | (si=0 li=6)
+[worker 1] step 7 | sample_id=56, shard=1 | (si=0 li=7)
+[worker 1] step 8 | sample_id=57, shard=1 | (si=0 li=8)
+[worker 1] step 9 | sample_id=58, shard=1 | (si=0 li=9)
+[worker 1] step 10 | sample_id=59, shard=1 | (si=0 li=10)
+[worker 1] checkpointing at step 10
+[worker 1] step 11 | sample_id=60, shard=1 | (si=0 li=11)
+[worker 1] step 12 | sample_id=61, shard=1 | (si=0 li=12)
+[worker 1] step 13 | sample_id=62, shard=1 | (si=0 li=13)
+Traceback (most recent call last):
+  File "C:\Users\mevan\Desktop\Projects\distributed-training-system\demo\worker.py", line 140, in <module>
+[worker 0] starting from step 0
+[worker 0] assigned 2 shard(s): ['shard_00000.txt', 'shard_00004.txt']
+[worker 0] resuming at shard_idx=0 line_idx=0 step=0
+[worker 0] step 1 | sample_id=0, shard=0 | (si=0 li=1)
+[worker 0] step 2 | sample_id=1, shard=0 | (si=0 li=2)
+[worker 0] step 3 | sample_id=2, shard=0 | (si=0 li=3)
+[worker 0] step 4 | sample_id=3, shard=0 | (si=0 li=4)
+[worker 0] step 5 | sample_id=4, shard=0 | (si=0 li=5)
+[worker 0] checkpointing at step 5
+[worker 0] step 6 | sample_id=5, shard=0 | (si=0 li=6)
+[worker 0] step 7 | sample_id=6, shard=0 | (si=0 li=7)
+[worker 0] step 8 | sample_id=7, shard=0 | (si=0 li=8)
+[worker 0] step 9 | sample_id=8, shard=0 | (si=0 li=9)
+[worker 0] step 10 | sample_id=9, shard=0 | (si=0 li=10)
+[worker 0] checkpointing at step 10
+[worker 0] step 11 | sample_id=10, shard=0 | (si=0 li=11)
+[worker 0] step 12 | sample_id=11, shard=0 | (si=0 li=12)
+[worker 0] step 13 | sample_id=12, shard=0 | (si=0 li=13)
+Traceback (most recent call last):
+  File "C:\Users\mevan\Desktop\Projects\distributed-training-system\demo\worker.py", line 140, in <module>
+  File "C:\Users\mevan\Desktop\Projects\distributed-training-system\demo\worker.py", line 140, in <module>
+Traceback (most recent call last):
+  File "C:\Users\mevan\Desktop\Projects\distributed-training-system\demo\worker.py", line 140, in <module>
+    main()
+  File "C:\Users\mevan\Desktop\Projects\distributed-training-system\demo\worker.py", line 120, in main
+    main()
+  File "C:\Users\mevan\Desktop\Projects\distributed-training-system\demo\worker.py", line 120, in main
+    main()
+  File "C:\Users\mevan\Desktop\Projects\distributed-training-system\demo\worker.py", line 120, in main
+    main()
+  File "C:\Users\mevan\Desktop\Projects\distributed-training-system\demo\worker.py", line 120, in main
+    time.sleep(SLEEP_SEC)
+KeyboardInterrupt
+    time.sleep(SLEEP_SEC)
+KeyboardInterrupt
+    time.sleep(SLEEP_SEC)
+KeyboardInterrupt
+    time.sleep(SLEEP_SEC)
+KeyboardInterrupt
+[coord] job=job-cb3f2279
+[coord] checkpoints=./checkpoints
+[coord] world_size=4
+[coord] starting worker rank=0 (world_size=4) pid=?
+[coord] worker rank=0 started pid=39544
+[coord] starting worker rank=1 (world_size=4) pid=?
+[coord] worker rank=1 started pid=16084
+[coord] starting worker rank=2 (world_size=4) pid=?
+[coord] worker rank=2 started pid=22964
+[coord] starting worker rank=3 (world_size=4) pid=?
+[coord] worker rank=3 started pid=25824
+
+[coord] received signal 2; stopping all workers...
+[coord] done.

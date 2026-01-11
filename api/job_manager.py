@@ -8,6 +8,7 @@ import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, Optional
+import psutil
 
 LOG_DIR = Path(__file__).resolve().parent / "logs"
 LOG_DIR.mkdir(parents=True, exist_ok=True)
@@ -46,6 +47,7 @@ class JobManager:
 
     def _load_from_disk(self):
         idx = _read_index()
+
         for jid, meta in idx.get("jobs", {}).items():
             self.jobs[jid] = Job(
                 job_id=jid,
@@ -54,6 +56,19 @@ class JobManager:
                 created_at=float(meta.get("created_at", time.time())),
                 env=meta.get("env", {}),
             )
+        pid = meta.get("pid")
+        env = meta.get("env", {})
+        if pid is not None:
+            env["PID"] = int(pid)
+            
+    def _update_index_job(self, job_id: str, patch: dict) -> None:
+        idx = _read_index()
+        if "jobs" not in idx:
+            idx["jobs"] = {}
+        if job_id not in idx["jobs"]:
+            idx["jobs"][job_id] = {}
+        idx["jobs"][job_id].update(patch)
+        _write_index(idx)
 
     def create_job(
         self,
@@ -81,13 +96,51 @@ class JobManager:
 
         log_f = open(log_path, "a", encoding="utf-8", buffering=1)
 
+        # proc = subprocess.Popen(
+        #     [sys.executable, str(COORDINATOR_PATH)],
+        #     cwd=str(PROJECT_ROOT),
+        #     env=env,
+        #     stdout=log_f,
+        #     stderr=log_f,
+        # )
+
+        # creationflags = 0
+        # kwargs = {}
+
+        # if os.name == "nt":
+        #     creationflags = subprocess.CREATE_NEW_PROCESS_GROUP | subprocess.DETACHED_PROCESS
+        #     kwargs["close_fds"] = True
+
+        # proc = subprocess.Popen(
+        #     [sys.executable, str(COORDINATOR_PATH)],
+        #     cwd=str(PROJECT_ROOT),
+        #     env=env,
+        #     stdout=log_f,
+        #     stderr=log_f,
+        #     creationflags=creationflags,
+        #     **kwargs,
+        # )
+
+        creationflags = 0
+        startupinfo = None
+
+        if os.name == "nt":
+            creationflags = (
+                subprocess.CREATE_NEW_PROCESS_GROUP
+                | subprocess.DETACHED_PROCESS
+                | subprocess.CREATE_NO_WINDOW
+            )
+
         proc = subprocess.Popen(
             [sys.executable, str(COORDINATOR_PATH)],
             cwd=str(PROJECT_ROOT),
             env=env,
             stdout=log_f,
             stderr=log_f,
+            creationflags=creationflags,
         )
+
+
 
         job = Job(
             job_id=jid,
@@ -108,6 +161,7 @@ class JobManager:
         idx = _read_index()
         idx["jobs"][jid] = {
             "job_id": jid,
+            "pid": proc.pid,
             "log_path": str(log_path),
             "created_at": job.created_at,
             "env": job.env,
@@ -115,6 +169,10 @@ class JobManager:
         _write_index(idx)
 
         return job
+
+
+
+        
 
     def get_job(self, job_id: str) -> Optional[Job]:
         return self.jobs.get(job_id)
@@ -132,11 +190,18 @@ class JobManager:
                 return {"job_id": job_id, "status": "COMPLETED", "exit_code": code}
             return {"job_id": job_id, "status": "FAILED", "exit_code": code}
 
-        return {
-            "job_id": job_id,
-            "status": "PERSISTED",
-            "note": "API restarted; process handle not available",
-        }
+        # return {
+        #     "job_id": job_id,
+        #     "status": "PERSISTED",
+        #     "note": "API restarted; process handle not available",
+        # }
+
+        # Restored from disk: no subprocess handle
+        if self._try_reattach(job):
+            return {"job_id": job_id, "status": "RUNNING", "pid": int(job.env["PID"]), "note": "reattached via PID"}
+
+        return {"job_id": job_id, "status": "LOST", "note": "API restarted; PID not running"}
+
 
     def list_jobs(self) -> list:
         return [self.status(jid) for jid in self.jobs.keys()]
@@ -167,11 +232,19 @@ class JobManager:
             return {"job_id": job_id, "status": "NOT_FOUND"}
 
         if job.proc is None:
-            return {
-                "job_id": job_id,
-                "status": "CANNOT_STOP",
-                "note": "no live process handle (API restarted)",
-            }
+            pid = job.env.get("PID")
+            if pid is None:
+                return {"job_id": job_id, "status": "CANNOT_STOP", "note": "no proc handle and no PID"}
+
+            pid = int(pid)
+            if not self._pid_alive(pid):
+                return {"job_id": job_id, "status": "NOT_RUNNING", "note": "PID not alive"}
+
+            try:
+                psutil.Process(pid).send_signal(signal.SIGINT)
+                return {"job_id": job_id, "status": "STOP_SIGNAL_SENT", "note": "stopped via PID"}
+            except Exception as e:
+                return {"job_id": job_id, "status": "STOP_FAILED", "error": str(e)}
 
         code = job.proc.poll()
         if code is not None:
@@ -183,6 +256,30 @@ class JobManager:
             job.proc.terminate()
 
         return {"job_id": job_id, "status": "STOP_SIGNAL_SENT"}
+
+    def _pid_alive(self, pid: int) -> bool:
+        try:
+            p = psutil.Process(pid)
+            return p.is_running() and p.status() != psutil.STATUS_ZOMBIE
+        except Exception:
+            return False
+
+    def _try_reattach(self, job: Job) -> bool:
+        """
+        If job has no proc handle (API restarted), but PID is alive, mark as reattached.
+        We still can't rebuild a Popen handle cleanly cross-platform,
+        but we can report RUNNING based on PID existence.
+        """
+        pid = job.env.get("PID")
+        if pid is None:
+            return False
+        try:
+            pid = int(pid)
+        except Exception:
+            return False
+        return self._pid_alive(pid)
+
+
 
 
 job_manager = JobManager()

@@ -1,0 +1,330 @@
+[worker 1] starting from step 0
+[worker 1] assigned 2 shard(s): ['shard_00001.txt', 'shard_00005.txt']
+[worker 1] resuming at shard_idx=0 line_idx=0 step=0
+[worker 1] step 1 | sample_id=50, shard=1 | (si=0 li=1)
+[worker 1] step 2 | sample_id=51, shard=1 | (si=0 li=2)
+[worker 1] step 3 | sample_id=52, shard=1 | (si=0 li=3)
+[worker 1] step 4 | sample_id=53, shard=1 | (si=0 li=4)
+[worker 1] step 5 | sample_id=54, shard=1 | (si=0 li=5)
+[worker 1] checkpointing at step 5
+[worker 1] step 6 | sample_id=55, shard=1 | (si=0 li=6)
+[worker 1] step 7 | sample_id=56, shard=1 | (si=0 li=7)
+[worker 1] step 8 | sample_id=57, shard=1 | (si=0 li=8)
+[worker 1] step 9 | sample_id=58, shard=1 | (si=0 li=9)
+[worker 1] step 10 | sample_id=59, shard=1 | (si=0 li=10)
+[worker 1] checkpointing at step 10
+[worker 1] step 11 | sample_id=60, shard=1 | (si=0 li=11)
+[worker 1] step 12 | sample_id=61, shard=1 | (si=0 li=12)
+[worker 1] step 13 | sample_id=62, shard=1 | (si=0 li=13)
+[worker 1] step 14 | sample_id=63, shard=1 | (si=0 li=14)
+[worker 1] step 15 | sample_id=64, shard=1 | (si=0 li=15)
+[worker 1] checkpointing at step 15
+[worker 1] step 16 | sample_id=65, shard=1 | (si=0 li=16)
+[worker 1] step 17 | sample_id=66, shard=1 | (si=0 li=17)
+[worker 1] step 18 | sample_id=67, shard=1 | (si=0 li=18)
+[worker 1] step 19 | sample_id=68, shard=1 | (si=0 li=19)
+[worker 1] step 20 | sample_id=69, shard=1 | (si=0 li=20)
+[worker 1] checkpointing at step 20
+[worker 1] step 21 | sample_id=70, shard=1 | (si=0 li=21)
+[worker 1] step 22 | sample_id=71, shard=1 | (si=0 li=22)
+[worker 1] step 23 | sample_id=72, shard=1 | (si=0 li=23)
+[worker 1] step 24 | sample_id=73, shard=1 | (si=0 li=24)
+[worker 1] step 25 | sample_id=74, shard=1 | (si=0 li=25)
+[worker 1] checkpointing at step 25
+[worker 1] step 26 | sample_id=75, shard=1 | (si=0 li=26)
+[worker 1] step 27 | sample_id=76, shard=1 | (si=0 li=27)
+[worker 1] step 28 | sample_id=77, shard=1 | (si=0 li=28)
+[worker 1] step 29 | sample_id=78, shard=1 | (si=0 li=29)
+[worker 1] step 30 | sample_id=79, shard=1 | (si=0 li=30)
+[worker 1] checkpointing at step 30
+[worker 1] step 31 | sample_id=80, shard=1 | (si=0 li=31)
+[worker 1] step 32 | sample_id=81, shard=1 | (si=0 li=32)
+[worker 1] step 33 | sample_id=82, shard=1 | (si=0 li=33)
+[worker 1] step 34 | sample_id=83, shard=1 | (si=0 li=34)
+[worker 1] step 35 | sample_id=84, shard=1 | (si=0 li=35)
+[worker 1] checkpointing at step 35
+[worker 1] step 36 | sample_id=85, shard=1 | (si=0 li=36)
+[worker 1] step 37 | sample_id=86, shard=1 | (si=0 li=37)
+[worker 1] step 38 | sample_id=87, shard=1 | (si=0 li=38)
+[worker 1] step 39 | sample_id=88, shard=1 | (si=0 li=39)
+[worker 1] step 40 | sample_id=89, shard=1 | (si=0 li=40)
+[worker 1] checkpointing at step 40
+[worker 1] step 41 | sample_id=90, shard=1 | (si=0 li=41)
+[worker 1] step 42 | sample_id=91, shard=1 | (si=0 li=42)
+[worker 1] step 43 | sample_id=92, shard=1 | (si=0 li=43)
+[worker 1] step 44 | sample_id=93, shard=1 | (si=0 li=44)
+[worker 1] step 45 | sample_id=94, shard=1 | (si=0 li=45)
+[worker 1] checkpointing at step 45
+[worker 1] step 46 | sample_id=95, shard=1 | (si=0 li=46)
+[worker 1] step 47 | sample_id=96, shard=1 | (si=0 li=47)
+[worker 1] step 48 | sample_id=97, shard=1 | (si=0 li=48)
+[worker 1] step 49 | sample_id=98, shard=1 | (si=0 li=49)
+[worker 1] step 50 | sample_id=99, shard=1 | (si=0 li=50)
+[worker 1] checkpointing at step 50
+[worker 1] step 51 | sample_id=250, shard=5 | (si=1 li=1)
+[worker 1] step 52 | sample_id=251, shard=5 | (si=1 li=2)
+[worker 1] step 53 | sample_id=252, shard=5 | (si=1 li=3)
+[worker 1] step 54 | sample_id=253, shard=5 | (si=1 li=4)
+[worker 1] step 55 | sample_id=254, shard=5 | (si=1 li=5)
+[worker 1] checkpointing at step 55
+[worker 1] step 56 | sample_id=255, shard=5 | (si=1 li=6)
+[worker 1] step 57 | sample_id=256, shard=5 | (si=1 li=7)
+[worker 1] step 58 | sample_id=257, shard=5 | (si=1 li=8)
+[worker 1] step 59 | sample_id=258, shard=5 | (si=1 li=9)
+[worker 2] starting from step 0
+[worker 2] assigned 2 shard(s): ['shard_00002.txt', 'shard_00006.txt']
+[worker 2] resuming at shard_idx=0 line_idx=0 step=0
+[worker 2] step 1 | sample_id=100, shard=2 | (si=0 li=1)
+[worker 2] step 2 | sample_id=101, shard=2 | (si=0 li=2)
+[worker 2] step 3 | sample_id=102, shard=2 | (si=0 li=3)
+[worker 2] step 4 | sample_id=103, shard=2 | (si=0 li=4)
+[worker 2] step 5 | sample_id=104, shard=2 | (si=0 li=5)
+[worker 2] checkpointing at step 5
+[worker 2] step 6 | sample_id=105, shard=2 | (si=0 li=6)
+[worker 2] step 7 | sample_id=106, shard=2 | (si=0 li=7)
+[worker 2] step 8 | sample_id=107, shard=2 | (si=0 li=8)
+[worker 2] step 9 | sample_id=108, shard=2 | (si=0 li=9)
+[worker 2] step 10 | sample_id=109, shard=2 | (si=0 li=10)
+[worker 2] checkpointing at step 10
+[worker 2] step 11 | sample_id=110, shard=2 | (si=0 li=11)
+[worker 2] step 12 | sample_id=111, shard=2 | (si=0 li=12)
+[worker 2] step 13 | sample_id=112, shard=2 | (si=0 li=13)
+[worker 2] step 14 | sample_id=113, shard=2 | (si=0 li=14)
+[worker 2] step 15 | sample_id=114, shard=2 | (si=0 li=15)
+[worker 2] checkpointing at step 15
+[worker 2] step 16 | sample_id=115, shard=2 | (si=0 li=16)
+[worker 2] step 17 | sample_id=116, shard=2 | (si=0 li=17)
+[worker 2] step 18 | sample_id=117, shard=2 | (si=0 li=18)
+[worker 2] step 19 | sample_id=118, shard=2 | (si=0 li=19)
+[worker 2] step 20 | sample_id=119, shard=2 | (si=0 li=20)
+[worker 2] checkpointing at step 20
+[worker 2] step 21 | sample_id=120, shard=2 | (si=0 li=21)
+[worker 2] step 22 | sample_id=121, shard=2 | (si=0 li=22)
+[worker 2] step 23 | sample_id=122, shard=2 | (si=0 li=23)
+[worker 2] step 24 | sample_id=123, shard=2 | (si=0 li=24)
+[worker 2] step 25 | sample_id=124, shard=2 | (si=0 li=25)
+[worker 2] checkpointing at step 25
+[worker 2] step 26 | sample_id=125, shard=2 | (si=0 li=26)
+[worker 2] step 27 | sample_id=126, shard=2 | (si=0 li=27)
+[worker 2] step 28 | sample_id=127, shard=2 | (si=0 li=28)
+[worker 2] step 29 | sample_id=128, shard=2 | (si=0 li=29)
+[worker 2] step 30 | sample_id=129, shard=2 | (si=0 li=30)
+[worker 2] checkpointing at step 30
+[worker 2] step 31 | sample_id=130, shard=2 | (si=0 li=31)
+[worker 2] step 32 | sample_id=131, shard=2 | (si=0 li=32)
+[worker 2] step 33 | sample_id=132, shard=2 | (si=0 li=33)
+[worker 2] step 34 | sample_id=133, shard=2 | (si=0 li=34)
+[worker 2] step 35 | sample_id=134, shard=2 | (si=0 li=35)
+[worker 2] checkpointing at step 35
+[worker 2] step 36 | sample_id=135, shard=2 | (si=0 li=36)
+[worker 2] step 37 | sample_id=136, shard=2 | (si=0 li=37)
+[worker 2] step 38 | sample_id=137, shard=2 | (si=0 li=38)
+[worker 2] step 39 | sample_id=138, shard=2 | (si=0 li=39)
+[worker 2] step 40 | sample_id=139, shard=2 | (si=0 li=40)
+[worker 2] checkpointing at step 40
+[worker 2] step 41 | sample_id=140, shard=2 | (si=0 li=41)
+[worker 2] step 42 | sample_id=141, shard=2 | (si=0 li=42)
+[worker 2] step 43 | sample_id=142, shard=2 | (si=0 li=43)
+[worker 2] step 44 | sample_id=143, shard=2 | (si=0 li=44)
+[worker 2] step 45 | sample_id=144, shard=2 | (si=0 li=45)
+[worker 2] checkpointing at step 45
+[worker 2] step 46 | sample_id=145, shard=2 | (si=0 li=46)
+[worker 2] step 47 | sample_id=146, shard=2 | (si=0 li=47)
+[worker 2] step 48 | sample_id=147, shard=2 | (si=0 li=48)
+[worker 2] step 49 | sample_id=148, shard=2 | (si=0 li=49)
+[worker 2] step 50 | sample_id=149, shard=2 | (si=0 li=50)
+[worker 2] checkpointing at step 50
+[worker 2] step 51 | sample_id=300, shard=6 | (si=1 li=1)
+[worker 2] step 52 | sample_id=301, shard=6 | (si=1 li=2)
+[worker 2] step 53 | sample_id=302, shard=6 | (si=1 li=3)
+[worker 2] step 54 | sample_id=303, shard=6 | (si=1 li=4)
+[worker 2] step 55 | sample_id=304, shard=6 | (si=1 li=5)
+[worker 2] checkpointing at step 55
+[worker 2] step 56 | sample_id=305, shard=6 | (si=1 li=6)
+[worker 2] step 57 | sample_id=306, shard=6 | (si=1 li=7)
+[worker 2] step 58 | sample_id=307, shard=6 | (si=1 li=8)
+[worker 2] step 59 | sample_id=308, shard=6 | (si=1 li=9)
+[worker 3] starting from step 0
+[worker 3] assigned 2 shard(s): ['shard_00003.txt', 'shard_00007.txt']
+[worker 3] resuming at shard_idx=0 line_idx=0 step=0
+[worker 3] step 1 | sample_id=150, shard=3 | (si=0 li=1)
+[worker 3] step 2 | sample_id=151, shard=3 | (si=0 li=2)
+[worker 3] step 3 | sample_id=152, shard=3 | (si=0 li=3)
+[worker 3] step 4 | sample_id=153, shard=3 | (si=0 li=4)
+[worker 3] step 5 | sample_id=154, shard=3 | (si=0 li=5)
+[worker 3] checkpointing at step 5
+[worker 3] step 6 | sample_id=155, shard=3 | (si=0 li=6)
+[worker 3] step 7 | sample_id=156, shard=3 | (si=0 li=7)
+[worker 3] step 8 | sample_id=157, shard=3 | (si=0 li=8)
+[worker 3] step 9 | sample_id=158, shard=3 | (si=0 li=9)
+[worker 3] step 10 | sample_id=159, shard=3 | (si=0 li=10)
+[worker 3] checkpointing at step 10
+[worker 3] step 11 | sample_id=160, shard=3 | (si=0 li=11)
+[worker 3] step 12 | sample_id=161, shard=3 | (si=0 li=12)
+[worker 3] step 13 | sample_id=162, shard=3 | (si=0 li=13)
+[worker 3] step 14 | sample_id=163, shard=3 | (si=0 li=14)
+[worker 3] step 15 | sample_id=164, shard=3 | (si=0 li=15)
+[worker 3] checkpointing at step 15
+[worker 3] step 16 | sample_id=165, shard=3 | (si=0 li=16)
+[worker 3] step 17 | sample_id=166, shard=3 | (si=0 li=17)
+[worker 3] step 18 | sample_id=167, shard=3 | (si=0 li=18)
+[worker 3] step 19 | sample_id=168, shard=3 | (si=0 li=19)
+[worker 3] step 20 | sample_id=169, shard=3 | (si=0 li=20)
+[worker 3] checkpointing at step 20
+[worker 3] step 21 | sample_id=170, shard=3 | (si=0 li=21)
+[worker 3] step 22 | sample_id=171, shard=3 | (si=0 li=22)
+[worker 3] step 23 | sample_id=172, shard=3 | (si=0 li=23)
+[worker 3] step 24 | sample_id=173, shard=3 | (si=0 li=24)
+[worker 3] step 25 | sample_id=174, shard=3 | (si=0 li=25)
+[worker 3] checkpointing at step 25
+[worker 3] step 26 | sample_id=175, shard=3 | (si=0 li=26)
+[worker 3] step 27 | sample_id=176, shard=3 | (si=0 li=27)
+[worker 3] step 28 | sample_id=177, shard=3 | (si=0 li=28)
+[worker 3] step 29 | sample_id=178, shard=3 | (si=0 li=29)
+[worker 3] step 30 | sample_id=179, shard=3 | (si=0 li=30)
+[worker 3] checkpointing at step 30
+[worker 3] step 31 | sample_id=180, shard=3 | (si=0 li=31)
+[worker 3] step 32 | sample_id=181, shard=3 | (si=0 li=32)
+[worker 3] step 33 | sample_id=182, shard=3 | (si=0 li=33)
+[worker 3] step 34 | sample_id=183, shard=3 | (si=0 li=34)
+[worker 3] step 35 | sample_id=184, shard=3 | (si=0 li=35)
+[worker 3] checkpointing at step 35
+[worker 3] step 36 | sample_id=185, shard=3 | (si=0 li=36)
+[worker 3] step 37 | sample_id=186, shard=3 | (si=0 li=37)
+[worker 3] step 38 | sample_id=187, shard=3 | (si=0 li=38)
+[worker 3] step 39 | sample_id=188, shard=3 | (si=0 li=39)
+[worker 3] step 40 | sample_id=189, shard=3 | (si=0 li=40)
+[worker 3] checkpointing at step 40
+[worker 3] step 41 | sample_id=190, shard=3 | (si=0 li=41)
+[worker 3] step 42 | sample_id=191, shard=3 | (si=0 li=42)
+[worker 3] step 43 | sample_id=192, shard=3 | (si=0 li=43)
+[worker 3] step 44 | sample_id=193, shard=3 | (si=0 li=44)
+[worker 3] step 45 | sample_id=194, shard=3 | (si=0 li=45)
+[worker 3] checkpointing at step 45
+[worker 3] step 46 | sample_id=195, shard=3 | (si=0 li=46)
+[worker 3] step 47 | sample_id=196, shard=3 | (si=0 li=47)
+[worker 3] step 48 | sample_id=197, shard=3 | (si=0 li=48)
+[worker 3] step 49 | sample_id=198, shard=3 | (si=0 li=49)
+[worker 3] step 50 | sample_id=199, shard=3 | (si=0 li=50)
+[worker 3] checkpointing at step 50
+[worker 3] step 51 | sample_id=350, shard=7 | (si=1 li=1)
+[worker 3] step 52 | sample_id=351, shard=7 | (si=1 li=2)
+[worker 3] step 53 | sample_id=352, shard=7 | (si=1 li=3)
+[worker 3] step 54 | sample_id=353, shard=7 | (si=1 li=4)
+[worker 3] step 55 | sample_id=354, shard=7 | (si=1 li=5)
+[worker 3] checkpointing at step 55
+[worker 3] step 56 | sample_id=355, shard=7 | (si=1 li=6)
+[worker 3] step 57 | sample_id=356, shard=7 | (si=1 li=7)
+[worker 3] step 58 | sample_id=357, shard=7 | (si=1 li=8)
+[worker 3] step 59 | sample_id=358, shard=7 | (si=1 li=9)
+Traceback (most recent call last):
+  File "C:\Users\mevan\Desktop\Projects\distributed-training-system\demo\worker.py", line 140, in <module>
+Traceback (most recent call last):
+  File "C:\Users\mevan\Desktop\Projects\distributed-training-system\demo\worker.py", line 140, in <module>
+Traceback (most recent call last):
+  File "C:\Users\mevan\Desktop\Projects\distributed-training-system\demo\worker.py", line 140, in <module>
+[worker 0] starting from step 0
+[worker 0] assigned 2 shard(s): ['shard_00000.txt', 'shard_00004.txt']
+[worker 0] resuming at shard_idx=0 line_idx=0 step=0
+[worker 0] step 1 | sample_id=0, shard=0 | (si=0 li=1)
+[worker 0] step 2 | sample_id=1, shard=0 | (si=0 li=2)
+[worker 0] step 3 | sample_id=2, shard=0 | (si=0 li=3)
+[worker 0] step 4 | sample_id=3, shard=0 | (si=0 li=4)
+[worker 0] step 5 | sample_id=4, shard=0 | (si=0 li=5)
+[worker 0] checkpointing at step 5
+[worker 0] step 6 | sample_id=5, shard=0 | (si=0 li=6)
+[worker 0] step 7 | sample_id=6, shard=0 | (si=0 li=7)
+[worker 0] step 8 | sample_id=7, shard=0 | (si=0 li=8)
+[worker 0] step 9 | sample_id=8, shard=0 | (si=0 li=9)
+[worker 0] step 10 | sample_id=9, shard=0 | (si=0 li=10)
+[worker 0] checkpointing at step 10
+[worker 0] step 11 | sample_id=10, shard=0 | (si=0 li=11)
+[worker 0] step 12 | sample_id=11, shard=0 | (si=0 li=12)
+[worker 0] step 13 | sample_id=12, shard=0 | (si=0 li=13)
+[worker 0] step 14 | sample_id=13, shard=0 | (si=0 li=14)
+[worker 0] step 15 | sample_id=14, shard=0 | (si=0 li=15)
+[worker 0] checkpointing at step 15
+[worker 0] step 16 | sample_id=15, shard=0 | (si=0 li=16)
+[worker 0] step 17 | sample_id=16, shard=0 | (si=0 li=17)
+[worker 0] step 18 | sample_id=17, shard=0 | (si=0 li=18)
+[worker 0] step 19 | sample_id=18, shard=0 | (si=0 li=19)
+[worker 0] step 20 | sample_id=19, shard=0 | (si=0 li=20)
+[worker 0] checkpointing at step 20
+[worker 0] step 21 | sample_id=20, shard=0 | (si=0 li=21)
+[worker 0] step 22 | sample_id=21, shard=0 | (si=0 li=22)
+[worker 0] step 23 | sample_id=22, shard=0 | (si=0 li=23)
+[worker 0] step 24 | sample_id=23, shard=0 | (si=0 li=24)
+[worker 0] step 25 | sample_id=24, shard=0 | (si=0 li=25)
+[worker 0] checkpointing at step 25
+[worker 0] step 26 | sample_id=25, shard=0 | (si=0 li=26)
+[worker 0] step 27 | sample_id=26, shard=0 | (si=0 li=27)
+[worker 0] step 28 | sample_id=27, shard=0 | (si=0 li=28)
+[worker 0] step 29 | sample_id=28, shard=0 | (si=0 li=29)
+[worker 0] step 30 | sample_id=29, shard=0 | (si=0 li=30)
+[worker 0] checkpointing at step 30
+[worker 0] step 31 | sample_id=30, shard=0 | (si=0 li=31)
+[worker 0] step 32 | sample_id=31, shard=0 | (si=0 li=32)
+[worker 0] step 33 | sample_id=32, shard=0 | (si=0 li=33)
+[worker 0] step 34 | sample_id=33, shard=0 | (si=0 li=34)
+[worker 0] step 35 | sample_id=34, shard=0 | (si=0 li=35)
+[worker 0] checkpointing at step 35
+[worker 0] step 36 | sample_id=35, shard=0 | (si=0 li=36)
+[worker 0] step 37 | sample_id=36, shard=0 | (si=0 li=37)
+[worker 0] step 38 | sample_id=37, shard=0 | (si=0 li=38)
+[worker 0] step 39 | sample_id=38, shard=0 | (si=0 li=39)
+[worker 0] step 40 | sample_id=39, shard=0 | (si=0 li=40)
+[worker 0] checkpointing at step 40
+[worker 0] step 41 | sample_id=40, shard=0 | (si=0 li=41)
+[worker 0] step 42 | sample_id=41, shard=0 | (si=0 li=42)
+[worker 0] step 43 | sample_id=42, shard=0 | (si=0 li=43)
+[worker 0] step 44 | sample_id=43, shard=0 | (si=0 li=44)
+[worker 0] step 45 | sample_id=44, shard=0 | (si=0 li=45)
+[worker 0] checkpointing at step 45
+[worker 0] step 46 | sample_id=45, shard=0 | (si=0 li=46)
+[worker 0] step 47 | sample_id=46, shard=0 | (si=0 li=47)
+[worker 0] step 48 | sample_id=47, shard=0 | (si=0 li=48)
+[worker 0] step 49 | sample_id=48, shard=0 | (si=0 li=49)
+[worker 0] step 50 | sample_id=49, shard=0 | (si=0 li=50)
+[worker 0] checkpointing at step 50
+[worker 0] step 51 | sample_id=200, shard=4 | (si=1 li=1)
+[worker 0] step 52 | sample_id=201, shard=4 | (si=1 li=2)
+[worker 0] step 53 | sample_id=202, shard=4 | (si=1 li=3)
+[worker 0] step 54 | sample_id=203, shard=4 | (si=1 li=4)
+[worker 0] step 55 | sample_id=204, shard=4 | (si=1 li=5)
+[worker 0] checkpointing at step 55
+[worker 0] step 56 | sample_id=205, shard=4 | (si=1 li=6)
+[worker 0] step 57 | sample_id=206, shard=4 | (si=1 li=7)
+[worker 0] step 58 | sample_id=207, shard=4 | (si=1 li=8)
+[worker 0] step 59 | sample_id=208, shard=4 | (si=1 li=9)
+Traceback (most recent call last):
+  File "C:\Users\mevan\Desktop\Projects\distributed-training-system\demo\worker.py", line 140, in <module>
+    main()
+  File "C:\Users\mevan\Desktop\Projects\distributed-training-system\demo\worker.py", line 120, in main
+    main()
+  File "C:\Users\mevan\Desktop\Projects\distributed-training-system\demo\worker.py", line 120, in main
+    main()
+  File "C:\Users\mevan\Desktop\Projects\distributed-training-system\demo\worker.py", line 120, in main
+    main()
+  File "C:\Users\mevan\Desktop\Projects\distributed-training-system\demo\worker.py", line 120, in main
+    time.sleep(SLEEP_SEC)
+KeyboardInterrupt
+    time.sleep(SLEEP_SEC)
+    time.sleep(SLEEP_SEC)
+KeyboardInterrupt
+KeyboardInterrupt
+    time.sleep(SLEEP_SEC)
+KeyboardInterrupt
+[coord] job=job-56f84553
+[coord] checkpoints=./checkpoints
+[coord] world_size=4
+[coord] starting worker rank=0 (world_size=4) pid=?
+[coord] worker rank=0 started pid=37284
+[coord] starting worker rank=1 (world_size=4) pid=?
+[coord] worker rank=1 started pid=12572
+[coord] starting worker rank=2 (world_size=4) pid=?
+[coord] worker rank=2 started pid=25768
+[coord] starting worker rank=3 (world_size=4) pid=?
+[coord] worker rank=3 started pid=37852
+
+[coord] received signal 2; stopping all workers...
+[coord] done.

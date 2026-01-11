@@ -1,0 +1,14 @@
+[coord] job=job-6b878545
+[coord] checkpoints=./checkpoints
+[coord] world_size=4
+[coord] starting worker rank=0 (world_size=4) pid=?
+[coord] worker rank=0 started pid=12884
+[coord] starting worker rank=1 (world_size=4) pid=?
+[coord] worker rank=1 started pid=10836
+[coord] starting worker rank=2 (world_size=4) pid=?
+[coord] worker rank=2 started pid=35832
+[coord] starting worker rank=3 (world_size=4) pid=?
+[coord] worker rank=3 started pid=38032
+
+[coord] received signal 2; stopping all workers...
+[coord] done.
