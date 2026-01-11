@@ -231,6 +231,35 @@
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
       }
+    },
+    "job-11052453": {
+      "job_id": "job-11052453",
+      "pid": 34760,
+      "log_path": "C:\\Users\\mevan\\Desktop\\Projects\\distributed-training-system\\api\\logs\\job-11052453.log",
+      "created_at": 1768105403.6734314,
+      "env": {
+        "WORLD_SIZE": "4",
+        "CHECKPOINT_EVERY": "5",
+        "SLEEP_SEC": "1.0",
+        "DATASET_DIR": "./data/shards",
+        "CHECKPOINT_DIR": "./checkpoints"
+      }
+    },
+    "job-3484cb3c": {
+      "job_id": "job-3484cb3c",
+      "pid": 28108,
+      "log_path": "C:\\Users\\mevan\\Desktop\\Projects\\distributed-training-system\\api\\logs\\job-3484cb3c.log",
+      "created_at": 1768108308.2298577,
+      "env": {
+        "WORLD_SIZE": "4",
+        "CHECKPOINT_EVERY": "5",
+        "SLEEP_SEC": "1.0",
+        "DATASET_DIR": "./data/shards",
+        "CHECKPOINT_DIR": "./checkpoints"
+      },
+      "exit_code": 0,
+      "finished_at": 1768108425.0896578,
+      "exit_reason": "completed_marker"
     }
   }
 }
