@@ -1,0 +1,28 @@
+{
+  "jobs": {
+    "job-2d5da60e": {
+      "job_id": "job-2d5da60e",
+      "log_path": "C:\\Users\\mevan\\Desktop\\Projects\\distributed-training-system\\api\\logs\\job-2d5da60e.log",
+      "created_at": 1768100649.2572782,
+      "env": {
+        "WORLD_SIZE": "4",
+        "CHECKPOINT_EVERY": "5",
+        "SLEEP_SEC": "0.05",
+        "DATASET_DIR": "./data/shards",
+        "CHECKPOINT_DIR": "./checkpoints"
+      }
+    },
+    "job-e73ff536": {
+      "job_id": "job-e73ff536",
+      "log_path": "C:\\Users\\mevan\\Desktop\\Projects\\distributed-training-system\\api\\logs\\job-e73ff536.log",
+      "created_at": 1768101019.3922548,
+      "env": {
+        "WORLD_SIZE": "4",
+        "CHECKPOINT_EVERY": "5",
+        "SLEEP_SEC": "0.05",
+        "DATASET_DIR": "./data/shards",
+        "CHECKPOINT_DIR": "./checkpoints"
+      }
+    }
+  }
+}
