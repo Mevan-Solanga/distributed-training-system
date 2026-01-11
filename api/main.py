@@ -3,6 +3,8 @@ from pydantic import BaseModel, Field
 from api.job_manager import job_manager
 import asyncio
 from fastapi.responses import StreamingResponse
+import asyncio
+from sse_starlette.sse import EventSourceResponse
 
 
 app = FastAPI(title="Distributed Training System API", version="0.1.0")

@@ -6,6 +6,8 @@ import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, Optional
+import signal
+
 
 LOG_DIR = Path(__file__).resolve().parent / "logs"
 LOG_DIR.mkdir(parents=True, exist_ok=True)
@@ -140,6 +142,38 @@ class JobManager:
         except Exception:
             text = new.decode(errors="replace")
         return text, len(data)
+
+    def stop_job(self, job_id: str) -> dict:
+        job = self.get_job(job_id)
+        if not job:
+            return {"job_id": job_id, "status": "NOT_FOUND"}
+
+        code = job.proc.poll()
+        if code is not None:
+            return {"job_id": job_id, "status": "NOT_RUNNING", "exit_code": code}
+
+        # Coordinator handles SIGINT and will stop workers gracefully
+        try:
+            job.proc.send_signal(signal.SIGINT)
+        except Exception:
+            # fallback
+            job.proc.terminate()
+
+        return {"job_id": job_id, "status": "STOP_SIGNAL_SENT"}
+
+    def read_new_log_bytes(self, job_id: str, offset: int) -> tuple[str, int]:
+        job = self.get_job(job_id)
+        if not job or not job.log_path.exists():
+            return "", offset
+
+        data = job.log_path.read_bytes()
+        if offset >= len(data):
+            return "", offset
+
+        new = data[offset:]
+        text = new.decode("utf-8", errors="replace")
+        return text, len(data)
+
 
 
 job_manager = JobManager()
