@@ -10,7 +10,10 @@
         "SLEEP_SEC": "0.05",
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
-      }
+      },
+      "exit_code": 0,
+      "finished_at": 1768189121.1991613,
+      "exit_reason": "completed_marker"
     },
     "job-e73ff536": {
       "job_id": "job-e73ff536",
@@ -22,7 +25,10 @@
         "SLEEP_SEC": "0.05",
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
-      }
+      },
+      "exit_code": 0,
+      "finished_at": 1768189121.2111325,
+      "exit_reason": "completed_marker"
     },
     "job-0809541d": {
       "job_id": "job-0809541d",
@@ -35,7 +41,10 @@
         "SLEEP_SEC": "0.2",
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
-      }
+      },
+      "exit_code": 0,
+      "finished_at": 1768189121.2214677,
+      "exit_reason": "completed_marker"
     },
     "job-7416fe09": {
       "job_id": "job-7416fe09",
@@ -48,7 +57,10 @@
         "SLEEP_SEC": "0.5",
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
-      }
+      },
+      "exit_code": 0,
+      "finished_at": 1768189121.2317824,
+      "exit_reason": "completed_marker"
     },
     "job-6af7dbb2": {
       "job_id": "job-6af7dbb2",
@@ -61,7 +73,10 @@
         "SLEEP_SEC": "0.5",
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
-      }
+      },
+      "exit_code": 1,
+      "finished_at": 1768189121.2436812,
+      "exit_reason": "python_traceback"
     },
     "job-cb3f2279": {
       "job_id": "job-cb3f2279",
@@ -74,7 +89,10 @@
         "SLEEP_SEC": "0.5",
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
-      }
+      },
+      "exit_code": 1,
+      "finished_at": 1768189121.2566938,
+      "exit_reason": "python_traceback"
     },
     "job-56f84553": {
       "job_id": "job-56f84553",
@@ -87,7 +105,10 @@
         "SLEEP_SEC": "0.5",
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
-      }
+      },
+      "exit_code": 1,
+      "finished_at": 1768189121.2686965,
+      "exit_reason": "python_traceback"
     },
     "job-c9270a42": {
       "job_id": "job-c9270a42",
@@ -100,7 +121,10 @@
         "SLEEP_SEC": "0.5",
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
-      }
+      },
+      "exit_code": 0,
+      "finished_at": 1768189121.2815578,
+      "exit_reason": "completed_marker"
     },
     "job-dfcb3b4a": {
       "job_id": "job-dfcb3b4a",
@@ -113,7 +137,10 @@
         "SLEEP_SEC": "0.5",
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
-      }
+      },
+      "exit_code": 0,
+      "finished_at": 1768189121.291265,
+      "exit_reason": "completed_marker"
     },
     "job-7d3cd170": {
       "job_id": "job-7d3cd170",
@@ -126,7 +153,10 @@
         "SLEEP_SEC": "0.5",
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
-      }
+      },
+      "exit_code": 0,
+      "finished_at": 1768189121.3002658,
+      "exit_reason": "completed_marker"
     },
     "job-c6ac59c5": {
       "job_id": "job-c6ac59c5",
@@ -139,7 +169,10 @@
         "SLEEP_SEC": "0.5",
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
-      }
+      },
+      "exit_code": 0,
+      "finished_at": 1768189121.3126557,
+      "exit_reason": "completed_marker"
     },
     "job-1f2a09cf": {
       "job_id": "job-1f2a09cf",
@@ -152,7 +185,10 @@
         "SLEEP_SEC": "0.5",
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
-      }
+      },
+      "exit_code": 0,
+      "finished_at": 1768189121.3249688,
+      "exit_reason": "completed_marker"
     },
     "job-53b7d90f": {
       "job_id": "job-53b7d90f",
@@ -165,7 +201,10 @@
         "SLEEP_SEC": "0.5",
         "DATASET_DIR": "./data/shards_big",
         "CHECKPOINT_DIR": "./checkpoints"
-      }
+      },
+      "exit_code": 0,
+      "finished_at": 1768189121.3356419,
+      "exit_reason": "completed_marker"
     },
     "job-040a25a8": {
       "job_id": "job-040a25a8",
@@ -178,7 +217,10 @@
         "SLEEP_SEC": "0.5",
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
-      }
+      },
+      "exit_code": 0,
+      "finished_at": 1768189121.3457608,
+      "exit_reason": "completed_marker"
     },
     "job-36ece9e1": {
       "job_id": "job-36ece9e1",
@@ -217,7 +259,10 @@
         "SLEEP_SEC": "0.5",
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
-      }
+      },
+      "exit_code": 0,
+      "finished_at": 1768189121.3554707,
+      "exit_reason": "completed_marker"
     },
     "job-9dee485d": {
       "job_id": "job-9dee485d",
@@ -230,7 +275,10 @@
         "SLEEP_SEC": "0.5",
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
-      }
+      },
+      "exit_code": 0,
+      "finished_at": 1768189121.3667097,
+      "exit_reason": "completed_marker"
     },
     "job-11052453": {
       "job_id": "job-11052453",
@@ -243,7 +291,10 @@
         "SLEEP_SEC": "1.0",
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
-      }
+      },
+      "exit_code": 0,
+      "finished_at": 1768189121.3790493,
+      "exit_reason": "completed_marker"
     },
     "job-3484cb3c": {
       "job_id": "job-3484cb3c",
@@ -260,6 +311,51 @@
       "exit_code": 0,
       "finished_at": 1768108425.0896578,
       "exit_reason": "completed_marker"
+    },
+    "job-5e7c9bb5": {
+      "job_id": "job-5e7c9bb5",
+      "pid": 17048,
+      "log_path": "C:\\Users\\mevan\\Desktop\\Projects\\distributed-training-system\\api\\logs\\job-5e7c9bb5.log",
+      "created_at": 1768189389.9524217,
+      "env": {
+        "WORLD_SIZE": "4",
+        "CHECKPOINT_EVERY": "5",
+        "SLEEP_SEC": "1.0",
+        "DATASET_DIR": "./data/shards",
+        "CHECKPOINT_DIR": "./checkpoints"
+      },
+      "exit_code": 0,
+      "finished_at": 1768189493.0436072,
+      "exit_reason": "completed_marker"
+    },
+    "job-e921e83f": {
+      "job_id": "job-e921e83f",
+      "pid": 27552,
+      "log_path": "C:\\Users\\mevan\\Desktop\\Projects\\distributed-training-system\\api\\logs\\job-e921e83f.log",
+      "created_at": 1768189510.631872,
+      "env": {
+        "WORLD_SIZE": "4",
+        "CHECKPOINT_EVERY": "5",
+        "SLEEP_SEC": "1.0",
+        "DATASET_DIR": "./data/shards",
+        "CHECKPOINT_DIR": "./checkpoints"
+      }
+    },
+    "job-c1e26bc8": {
+      "job_id": "job-c1e26bc8",
+      "pid": 17400,
+      "log_path": "C:\\Users\\mevan\\Desktop\\Projects\\distributed-training-system\\api\\logs\\job-c1e26bc8.log",
+      "created_at": 1768193213.934969,
+      "env": {
+        "WORLD_SIZE": "4",
+        "CHECKPOINT_EVERY": "5",
+        "SLEEP_SEC": "0.05",
+        "DATASET_DIR": "./data/shards",
+        "CHECKPOINT_DIR": "./checkpoints"
+      },
+      "status": "RUNNING",
+      "exit_code": null,
+      "ended_at": null
     }
   }
 }

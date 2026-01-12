@@ -1,4 +1,3 @@
-# api/job_manager.py
 import os
 import sys
 import time
@@ -9,7 +8,6 @@ import subprocess
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Dict, Optional, Tuple
-
 import psutil
 
 LOG_DIR = Path(__file__).resolve().parent / "logs"
@@ -33,13 +31,22 @@ def _write_index(data: dict) -> None:
     INDEX_PATH.write_text(json.dumps(data, indent=2), encoding="utf-8")
 
 
+def _ensure_index_job(idx: dict, job_id: str) -> dict:
+    if "jobs" not in idx:
+        idx["jobs"] = {}
+    if job_id not in idx["jobs"]:
+        idx["jobs"][job_id] = {"job_id": job_id}
+    return idx
+
+
 @dataclass
 class Job:
     job_id: str
     proc: Optional[subprocess.Popen]  # None after API restart
+    pid: Optional[int]
     log_path: Path
     created_at: float
-    env: dict  # config + PID maybe
+    env: dict
 
 
 class JobManager:
@@ -47,36 +54,41 @@ class JobManager:
         self.jobs: Dict[str, Job] = {}
         self._load_from_disk()
 
-    # ---------------- Index helpers ----------------
-    def _update_index_job(self, job_id: str, patch: dict) -> None:
-        idx = _read_index()
-        idx.setdefault("jobs", {})
-        idx["jobs"].setdefault(job_id, {})
-        idx["jobs"][job_id].update(patch)
-        _write_index(idx)
-
-    # ---------------- Restore ----------------
-    def _load_from_disk(self) -> None:
+    def _load_from_disk(self):
         idx = _read_index()
         for jid, meta in idx.get("jobs", {}).items():
-            env = dict(meta.get("env", {}))
-            pid = meta.get("pid")
-            if pid is not None:
-                env["PID"] = int(pid)
-
-            # restore persisted terminal status if present
-            if meta.get("exit_code") is not None:
-                env["EXIT_CODE"] = int(meta["exit_code"])
-
             self.jobs[jid] = Job(
                 job_id=jid,
                 proc=None,
+                pid=meta.get("pid"),
                 log_path=Path(meta["log_path"]),
                 created_at=float(meta.get("created_at", time.time())),
-                env=env,
+                env=meta.get("env", {}),
             )
 
-    # ---------------- Create ----------------
+    def _patch_index(self, job_id: str, patch: dict) -> None:
+        idx = _read_index()
+        _ensure_index_job(idx, job_id)
+        idx["jobs"][job_id].update(patch)
+        _write_index(idx)
+
+    def _pid_alive(self, pid: int) -> bool:
+        try:
+            p = psutil.Process(pid)
+            return p.is_running() and p.status() != psutil.STATUS_ZOMBIE
+        except Exception:
+            return False
+
+    def _log_indicates_completed(self, job: Job) -> bool:
+        if not job.log_path.exists():
+            return False
+        try:
+            # Read last chunk only (fast)
+            data = job.log_path.read_text(encoding="utf-8", errors="replace")
+            return "Job COMPLETED." in data or "all workers DONE. Job COMPLETED." in data
+        except Exception:
+            return False
+
     def create_job(
         self,
         world_size: int = 4,
@@ -103,28 +115,24 @@ class JobManager:
 
         log_f = open(log_path, "a", encoding="utf-8", buffering=1)
 
-        popen_kwargs = dict(
+        creationflags = 0
+        # IMPORTANT: detach on Windows so stopping Uvicorn does NOT send Ctrl+C to the job
+        if os.name == "nt":
+            creationflags = subprocess.DETACHED_PROCESS | subprocess.CREATE_NEW_PROCESS_GROUP
+
+        proc = subprocess.Popen(
+            [sys.executable, str(COORDINATOR_PATH)],
             cwd=str(PROJECT_ROOT),
             env=env,
             stdout=log_f,
             stderr=log_f,
+            creationflags=creationflags,
         )
-
-        # Detach so uvicorn restart doesn't kill the job
-        if os.name == "nt":
-            popen_kwargs["creationflags"] = (
-                subprocess.CREATE_NEW_PROCESS_GROUP
-                | subprocess.DETACHED_PROCESS
-                | subprocess.CREATE_NO_WINDOW
-            )
-        else:
-            popen_kwargs["start_new_session"] = True
-
-        proc = subprocess.Popen([sys.executable, str(COORDINATOR_PATH)], **popen_kwargs)
 
         job = Job(
             job_id=jid,
             proc=proc,
+            pid=proc.pid,
             log_path=log_path,
             created_at=time.time(),
             env={
@@ -133,38 +141,66 @@ class JobManager:
                 "SLEEP_SEC": str(sleep_sec),
                 "DATASET_DIR": dataset_dir,
                 "CHECKPOINT_DIR": checkpoint_dir,
-                "PID": int(proc.pid),
             },
         )
+
         self.jobs[jid] = job
 
-        idx = _read_index()
-        idx.setdefault("jobs", {})
-        idx["jobs"][jid] = {
-            "job_id": jid,
-            "pid": proc.pid,
-            "log_path": str(log_path),
-            "created_at": job.created_at,
-            "env": {
-                "WORLD_SIZE": str(world_size),
-                "CHECKPOINT_EVERY": str(checkpoint_every),
-                "SLEEP_SEC": str(sleep_sec),
-                "DATASET_DIR": dataset_dir,
-                "CHECKPOINT_DIR": checkpoint_dir,
+        self._patch_index(
+            jid,
+            {
+                "job_id": jid,
+                "pid": proc.pid,
+                "log_path": str(log_path),
+                "created_at": job.created_at,
+                "env": job.env,
+                "status": "RUNNING",
+                "exit_code": None,
+                "ended_at": None,
             },
-        }
-        _write_index(idx)
+        )
 
         return job
 
-    # ---------------- Basic getters ----------------
     def get_job(self, job_id: str) -> Optional[Job]:
         return self.jobs.get(job_id)
+
+    def status(self, job_id: str) -> dict:
+        job = self.get_job(job_id)
+        if not job:
+            return {"job_id": job_id, "status": "NOT_FOUND"}
+
+        # If we still have a live Popen handle (same API process)
+        if job.proc is not None:
+            code = job.proc.poll()
+            if code is None:
+                return {"job_id": job_id, "status": "RUNNING", "pid": job.proc.pid}
+            # Process ended; persist final status once
+            final = "COMPLETED" if code == 0 else "FAILED"
+            self._patch_index(
+                job_id,
+                {"status": final, "exit_code": int(code), "ended_at": time.time()},
+            )
+            return {"job_id": job_id, "status": final, "exit_code": int(code)}
+
+        # After API restart: no proc handle, rely on persisted PID + log
+        pid = job.pid
+        if pid is not None and self._pid_alive(int(pid)):
+            return {"job_id": job_id, "status": "RUNNING", "pid": int(pid), "note": "reattached via PID"}
+
+        # PID not alive → job ended sometime; infer from log and persist
+        if self._log_indicates_completed(job):
+            self._patch_index(job_id, {"status": "COMPLETED", "exit_code": 0, "ended_at": time.time()})
+            return {"job_id": job_id, "status": "COMPLETED", "exit_code": 0, "note": "inferred from logs"}
+
+        # Otherwise unknown end (killed/crashed)
+        # Keep as FAILED with unknown exit_code for MVP
+        self._patch_index(job_id, {"status": "FAILED", "exit_code": None, "ended_at": time.time()})
+        return {"job_id": job_id, "status": "FAILED", "note": "PID not running; completion not found in logs"}
 
     def list_jobs(self) -> list:
         return [self.status(jid) for jid in self.jobs.keys()]
 
-    # ---------------- Logs ----------------
     def tail_logs(self, job_id: str, tail: int = 200) -> str:
         job = self.get_job(job_id)
         if not job or not job.log_path.exists():
@@ -185,124 +221,108 @@ class JobManager:
         text = new.decode("utf-8", errors="replace")
         return text, len(data)
 
-    # ---------------- Status ----------------
-    def status(self, job_id: str) -> dict:
-        job = self.get_job(job_id)
-        if not job:
-            return {"job_id": job_id, "status": "NOT_FOUND"}
-
-        # If we have a live Popen handle (no restart)
-        if job.proc is not None:
-            code = job.proc.poll()
-            if code is None:
-                return {"job_id": job_id, "status": "RUNNING", "pid": job.proc.pid}
-
-            # terminal: persist
-            self._update_index_job(job_id, {"exit_code": int(code), "finished_at": time.time()})
-            if code == 0:
-                return {"job_id": job_id, "status": "COMPLETED", "exit_code": 0}
-            return {"job_id": job_id, "status": "FAILED", "exit_code": int(code)}
-
-        # API restarted path: consult index first
-        idx = _read_index()
-        meta = idx.get("jobs", {}).get(job_id, {})
-
-        if meta.get("exit_code") is not None:
-            exit_code = int(meta["exit_code"])
-            if exit_code == 0:
-                return {"job_id": job_id, "status": "COMPLETED", "exit_code": 0, "note": "persisted"}
-            return {"job_id": job_id, "status": "FAILED", "exit_code": exit_code, "note": "persisted"}
-
-        # If PID exists and alive -> RUNNING
-        pid = meta.get("pid", job.env.get("PID"))
-        if pid is not None and self._pid_alive(int(pid)):
-            return {"job_id": job_id, "status": "RUNNING", "pid": int(pid), "note": "reattached via PID"}
-
-        # PID is dead. Determine terminal status from log.
-        inferred = self._infer_terminal_from_log(job.log_path)
-        if inferred is not None:
-            exit_code, reason = inferred
-            self._update_index_job(job_id, {"exit_code": int(exit_code), "finished_at": time.time(), "exit_reason": reason})
-            if exit_code == 0:
-                return {"job_id": job_id, "status": "COMPLETED", "exit_code": 0, "note": f"inferred from log: {reason}"}
-            return {"job_id": job_id, "status": "FAILED", "exit_code": int(exit_code), "note": f"inferred from log: {reason}"}
-
-        return {"job_id": job_id, "status": "LOST", "note": "API restarted; PID not running and could not infer from log"}
-
-    def _infer_terminal_from_log(self, log_path: Path) -> Optional[Tuple[int, str]]:
-        if not log_path.exists():
-            return None
-
-        # Read only the tail for speed
-        try:
-            lines = log_path.read_text(encoding="utf-8", errors="replace").splitlines()
-            tail = "\n".join(lines[-300:])
-        except Exception:
-            return None
-
-        # Your coordinator prints this exact line
-        if "Job COMPLETED." in tail or "all workers DONE. Job COMPLETED." in tail:
-            return 0, "completed_marker"
-
-        # Some basic failure markers (optional / best-effort)
-        if "max restarts hit" in tail.lower():
-            return 1, "max_restarts_hit"
-        if "Traceback (most recent call last)" in tail:
-            return 1, "python_traceback"
-
-        return None
-
-    # ---------------- Stop ----------------
     def stop_job(self, job_id: str) -> dict:
         job = self.get_job(job_id)
         if not job:
             return {"job_id": job_id, "status": "NOT_FOUND"}
 
-        # live handle
-        if job.proc is not None:
-            code = job.proc.poll()
-            if code is not None:
-                self._update_index_job(job_id, {"exit_code": int(code), "finished_at": time.time()})
-                return {"job_id": job_id, "status": "NOT_RUNNING", "exit_code": int(code)}
-
-            try:
-                if os.name == "nt":
-                    job.proc.send_signal(signal.CTRL_BREAK_EVENT)
-                else:
-                    job.proc.send_signal(signal.SIGINT)
-            except Exception:
-                job.proc.terminate()
-
-            return {"job_id": job_id, "status": "STOP_SIGNAL_SENT"}
-
-        # restarted: PID kill
-        idx = _read_index()
-        meta = idx.get("jobs", {}).get(job_id, {})
-        pid = meta.get("pid", job.env.get("PID"))
+        pid = job.pid if job.pid is not None else None
         if pid is None:
-            return {"job_id": job_id, "status": "CANNOT_STOP", "note": "no proc handle and no PID"}
+            return {"job_id": job_id, "status": "CANNOT_STOP", "note": "no PID known"}
 
         pid = int(pid)
         if not self._pid_alive(pid):
             return {"job_id": job_id, "status": "NOT_RUNNING", "note": "PID not alive"}
 
+        # Detached jobs can't reliably receive Ctrl+C; terminate for MVP
         try:
-            p = psutil.Process(pid)
-            if os.name == "nt":
-                p.send_signal(signal.CTRL_BREAK_EVENT)
-            else:
-                p.send_signal(signal.SIGINT)
-            return {"job_id": job_id, "status": "STOP_SIGNAL_SENT", "note": "stopped via PID"}
+            psutil.Process(pid).terminate()
+            return {"job_id": job_id, "status": "STOP_SENT", "note": "terminated via PID"}
         except Exception as e:
             return {"job_id": job_id, "status": "STOP_FAILED", "error": str(e)}
 
-    # ---------------- PID helper ----------------
-    def _pid_alive(self, pid: int) -> bool:
-        try:
-            p = psutil.Process(pid)
-            return p.is_running() and p.status() != psutil.STATUS_ZOMBIE
-        except Exception:
-            return False
+    def delete_job(self, job_id: str, delete_logs: bool = False) -> dict:
+        job = self.get_job(job_id)
+        if not job:
+            return {"job_id": job_id, "status": "NOT_FOUND"}
+
+        # If it's still running, stop it first (best-effort)
+        st = self.status(job_id)
+        if st.get("status") == "RUNNING":
+            self.stop_job(job_id)
+
+        # Remove from memory
+        self.jobs.pop(job_id, None)
+
+        # Remove from index.json
+        idx = _read_index()
+        if "jobs" in idx and job_id in idx["jobs"]:
+            idx["jobs"].pop(job_id, None)
+            _write_index(idx)
+
+        # Optionally delete the log file
+        if delete_logs and job.log_path.exists():
+            try:
+                job.log_path.unlink()
+            except Exception:
+                pass
+
+        return {"job_id": job_id, "status": "DELETED", "deleted_logs": bool(delete_logs)}
+
+    def cleanup_jobs(self, keep_last: int = 50, delete_logs: bool = False) -> dict:
+        """
+        Keep only N most recent jobs in index + memory.
+        (Useful because index.json grows forever.)
+        """
+        idx = _read_index()
+        jobs_map = idx.get("jobs", {})
+
+        # Sort by created_at (desc). Missing created_at -> treat as 0.
+        items = sorted(
+            jobs_map.items(),
+            key=lambda kv: float(kv[1].get("created_at", 0.0)),
+            reverse=True,
+        )
+
+        keep = dict(items[: max(0, int(keep_last))])
+        remove = dict(items[max(0, int(keep_last)) :])
+
+        removed_ids = list(remove.keys())
+
+        # Delete logs for removed jobs if requested
+        if delete_logs:
+            for jid, meta in remove.items():
+                lp = meta.get("log_path")
+                if lp:
+                    try:
+                        Path(lp).unlink(missing_ok=True)  # py3.8+: missing_ok supported
+                    except TypeError:
+                        # fallback for older
+                        p = Path(lp)
+                        if p.exists():
+                            try:
+                                p.unlink()
+                            except Exception:
+                                pass
+                    except Exception:
+                        pass
+
+        # Write trimmed index
+        idx["jobs"] = keep
+        _write_index(idx)
+
+        # Also trim in-memory dict (best-effort)
+        for jid in removed_ids:
+            self.jobs.pop(jid, None)
+
+        return {
+            "status": "OK",
+            "kept": len(keep),
+            "removed": len(remove),
+            "removed_job_ids": removed_ids,
+            "deleted_logs": bool(delete_logs),
+        }
+
 
 
 job_manager = JobManager()
