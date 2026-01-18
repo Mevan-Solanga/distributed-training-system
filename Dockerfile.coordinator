@@ -1,0 +1,34 @@
+FROM rust:1.75 as builder
+
+WORKDIR /app
+
+# Copy Cargo files
+COPY coordinator/Cargo.toml coordinator/Cargo.lock* ./
+
+# Copy source
+COPY coordinator/src ./src
+
+# Build
+RUN cargo build --release
+
+# Runtime stage
+FROM debian:bookworm-slim
+
+WORKDIR /app
+
+# Install Python for spawning workers
+RUN apt-get update && apt-get install -y --no-install-recommends python3.11 && rm -rf /var/lib/apt/lists/*
+
+# Copy Rust binary
+COPY --from=builder /app/target/release/coordinator /usr/local/bin/
+
+# Copy demo code for workers to run
+COPY demo/ demo/
+COPY requirements.txt .
+
+# Install Python dependencies
+RUN pip3 install --no-cache-dir -r requirements.txt
+
+ENV PYTHONUNBUFFERED=1
+
+CMD ["coordinator"]

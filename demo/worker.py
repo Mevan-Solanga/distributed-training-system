@@ -2,8 +2,16 @@ import os
 import json
 import time
 import shutil
+import threading
 from pathlib import Path
 from itertools import islice
+
+# Import S3 utils if available
+try:
+    from demo.s3_utils import use_s3, download_shard, list_shards, upload_checkpoint
+    HAS_S3 = True
+except ImportError:
+    HAS_S3 = False
 
 # ---------- CONFIG ----------
 JOB_ID = os.getenv("JOB_ID", "demo-job")
@@ -19,6 +27,7 @@ DATASET_DIR = Path(os.getenv("DATASET_DIR", "./data/shards"))
 
 JOB_DIR = CHECKPOINT_DIR / JOB_ID / f"worker_{RANK}"
 LATEST_FILE = JOB_DIR / "LATEST"
+HEARTBEAT_FILE = JOB_DIR / "HEARTBEAT"
 
 
 def load_checkpoint():
@@ -65,34 +74,83 @@ def save_checkpoint(state):
     _safe_rmtree(tmp_dir)
     tmp_dir.mkdir(parents=True, exist_ok=True)
 
+    # Write state
     with open(tmp_dir / "state.json", "w", encoding="utf-8") as f:
         json.dump(state, f)
 
+    # Write manifest with metadata
+    manifest = {
+        "step": step,
+        "timestamp": time.time(),
+        "rank": state.get("rank", RANK),
+        "world_size": state.get("world_size", WORLD_SIZE),
+        "committed": True,
+    }
+    with open(tmp_dir / "manifest.json", "w", encoding="utf-8") as f:
+        json.dump(manifest, f)
+
+    # Fsync for durability
+    try:
+        state_path = tmp_dir / "state.json"
+        with open(state_path, "r") as f:
+            os.fsync(f.fileno())
+    except Exception:
+        pass
+
+    # Atomic rename
     try:
         tmp_dir.rename(final_dir)
     except FileExistsError:
         _safe_rmtree(tmp_dir)
 
+    # Update LATEST pointer atomically
     LATEST_FILE.write_text(final_dir.name)
 
 
 def assigned_shards():
-    all_shards = sorted(DATASET_DIR.glob("shard_*.txt"))
+    """Get list of shards assigned to this worker (round-robin by rank)."""
+    if HAS_S3 and use_s3():
+        # Use S3
+        bucket = os.getenv("S3_BUCKET", "training-data")
+        shards = list_shards(bucket, prefix="shards/")
+        # Filter by rank
+        assigned = [s for i, s in enumerate(shards) if i % WORLD_SIZE == RANK]
+        return assigned
+    else:
+        # Use local filesystem
+        all_shards = sorted(DATASET_DIR.glob("shard_*.txt"))
 
-    def shard_index(path: Path) -> int:
-        return int(path.stem.split("_")[1])
+        def shard_index(path: Path) -> int:
+            return int(path.stem.split("_")[1])
 
-    return [p for p in all_shards if shard_index(p) % WORLD_SIZE == RANK]
+        return [p for p in all_shards if shard_index(p) % WORLD_SIZE == RANK]
+
+
+def heartbeat_loop():
+    """Write heartbeat file every 2 seconds so coordinator knows we're alive."""
+    while True:
+        try:
+            HEARTBEAT_FILE.parent.mkdir(parents=True, exist_ok=True)
+            HEARTBEAT_FILE.write_text(json.dumps({"timestamp": time.time(), "rank": RANK, "pid": os.getpid()}))
+        except Exception:
+            pass
+        time.sleep(2.0)
 
 
 def main():
     JOB_DIR.mkdir(parents=True, exist_ok=True)
 
+    # Start heartbeat thread
+    hb_thread = threading.Thread(target=heartbeat_loop, daemon=True)
+    hb_thread.start()
+
     state = load_checkpoint()
     print(f"[worker {RANK}] starting from step {state['step']}")
 
     shards = assigned_shards()
-    print(f"[worker {RANK}] assigned {len(shards)} shard(s): {[p.name for p in shards]}")
+    use_s3_flag = HAS_S3 and use_s3()
+    shard_names = [Path(s).name if isinstance(s, str) else s.name for s in shards]
+    print(f"[worker {RANK}] assigned {len(shards)} shard(s) {'(from S3)' if use_s3_flag else '(local)'}: {shard_names}")
 
     if not shards:
         print(f"[worker {RANK}] no shards assigned. Exiting.")
@@ -108,7 +166,20 @@ def main():
     )
 
     for si in range(state["shard_idx"], len(shards)):
-        shard_path = shards[si]
+        shard = shards[si]
+        
+        # Download from S3 if needed
+        if use_s3_flag:
+            bucket = os.getenv("S3_BUCKET", "training-data")
+            local_shard_path = DATASET_DIR / Path(shard).name
+            if not local_shard_path.exists():
+                print(f"[worker {RANK}] downloading shard {shard}...")
+                if not download_shard(bucket, shard, local_shard_path):
+                    print(f"[worker {RANK}] failed to download {shard}")
+                    continue
+            shard_path = local_shard_path
+        else:
+            shard_path = shard
 
         if si != state["shard_idx"]:
             state["line_idx"] = 0
@@ -134,6 +205,7 @@ def main():
                     save_checkpoint(state)
 
     print(f"[worker {RANK}] finished all assigned shards. Exiting.")
+
 
 
 if __name__ == "__main__":

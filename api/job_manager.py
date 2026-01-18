@@ -201,6 +201,63 @@ class JobManager:
     def list_jobs(self) -> list:
         return [self.status(jid) for jid in self.jobs.keys()]
 
+    def summary(self, job_id: str) -> dict:
+        """Extract metrics from job logs: step count, throughput, ETA."""
+        job = self.get_job(job_id)
+        if not job:
+            return {"job_id": job_id, "status": "NOT_FOUND"}
+
+        st = self.status(job_id)
+        base = {
+            "job_id": job_id,
+            "status": st.get("status", "UNKNOWN"),
+            "created_at": job.created_at,
+            "pid": job.pid,
+        }
+
+        if not job.log_path.exists():
+            return base
+
+        try:
+            logs = job.log_path.read_text(encoding="utf-8", errors="replace")
+            lines = logs.splitlines()
+
+            # Parse step counts from worker logs: "[worker X] step N"
+            max_step = 0
+            for line in lines:
+                if "step " in line and "[worker" in line:
+                    parts = line.split("step ")
+                    if len(parts) > 1:
+                        try:
+                            step_num = int(parts[1].split()[0].split("|")[0])
+                            max_step = max(max_step, step_num)
+                        except (ValueError, IndexError):
+                            pass
+
+            base["max_step"] = max_step
+            base["world_size"] = int(job.env.get("WORLD_SIZE", 1))
+
+            # Count completed checkpoints
+            checkpoint_count = logs.count("checkpointing at step")
+            base["checkpoints_saved"] = checkpoint_count
+
+            # Estimate ETA if running
+            if st.get("status") == "RUNNING" and max_step > 0:
+                elapsed = time.time() - job.created_at
+                throughput = max_step / elapsed if elapsed > 0 else 0
+                base["throughput_steps_per_sec"] = round(throughput, 2)
+            else:
+                base["throughput_steps_per_sec"] = 0.0
+
+            return base
+        except Exception as e:
+            base["error"] = str(e)
+            return base
+
+    def list_summaries(self) -> list:
+        """List summaries for all jobs."""
+        return [self.summary(jid) for jid in self.jobs.keys()]
+
     def tail_logs(self, job_id: str, tail: int = 200) -> str:
         job = self.get_job(job_id)
         if not job or not job.log_path.exists():
@@ -241,15 +298,27 @@ class JobManager:
         except Exception as e:
             return {"job_id": job_id, "status": "STOP_FAILED", "error": str(e)}
 
-    def delete_job(self, job_id: str, delete_logs: bool = False) -> dict:
+    def delete_job(
+        self, job_id: str, delete_logs: bool = False, stop_first: bool = False, force: bool = False
+    ) -> dict:
         job = self.get_job(job_id)
         if not job:
             return {"job_id": job_id, "status": "NOT_FOUND"}
 
-        # If it's still running, stop it first (best-effort)
+        # Check if running
         st = self.status(job_id)
-        if st.get("status") == "RUNNING":
+        is_running = st.get("status") == "RUNNING"
+
+        # If running and not force, refuse unless stop_first
+        if is_running and not force:
+            if not stop_first:
+                return {"job_id": job_id, "status": "REFUSED_RUNNING", "note": "job is running; use stop_first=True or force=True"}
+
+        # Stop if requested
+        if is_running and (stop_first or force):
             self.stop_job(job_id)
+            # Give it a moment to stop
+            time.sleep(0.5)
 
         # Remove from memory
         self.jobs.pop(job_id, None)
@@ -267,7 +336,66 @@ class JobManager:
             except Exception:
                 pass
 
+        # Also delete checkpoint directory if requested
+        checkpoint_dir = Path(job.env.get("CHECKPOINT_DIR", "./checkpoints"))
+        if delete_logs and force:
+            job_checkpoint_dir = checkpoint_dir / job_id
+            if job_checkpoint_dir.exists():
+                try:
+                    import shutil
+                    shutil.rmtree(job_checkpoint_dir)
+                except Exception:
+                    pass
+
         return {"job_id": job_id, "status": "DELETED", "deleted_logs": bool(delete_logs)}
+
+    def purge(
+        self,
+        older_than_seconds: Optional[float] = None,
+        statuses: Optional[list] = None,
+        delete_logs: bool = True,
+        stop_running: bool = False,
+        force: bool = False,
+    ) -> dict:
+        """Delete jobs matching criteria (age, status)."""
+        idx = _read_index()
+        jobs_map = idx.get("jobs", {})
+        now = time.time()
+
+        to_delete = []
+        for jid, meta in jobs_map.items():
+            # Check status filter
+            if statuses is not None and len(statuses) > 0:
+                job_status = meta.get("status", "UNKNOWN")
+                if job_status not in statuses:
+                    continue
+
+            # Check age filter
+            if older_than_seconds is not None:
+                created_at = float(meta.get("created_at", now))
+                age = now - created_at
+                if age < older_than_seconds:
+                    continue
+
+            to_delete.append(jid)
+
+        # Delete them
+        deleted_count = 0
+        for jid in to_delete:
+            result = self.delete_job(
+                jid,
+                delete_logs=delete_logs,
+                stop_first=stop_running,
+                force=force,
+            )
+            if result.get("status") in ("DELETED", "NOT_FOUND"):
+                deleted_count += 1
+
+        return {
+            "status": "OK",
+            "deleted": deleted_count,
+            "total_matched": len(to_delete),
+        }
 
     def cleanup_jobs(self, keep_last: int = 50, delete_logs: bool = False) -> dict:
         """

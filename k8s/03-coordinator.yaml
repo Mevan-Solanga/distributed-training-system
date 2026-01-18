@@ -1,0 +1,155 @@
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: checkpoints
+  namespace: training-system
+spec:
+  accessModes:
+    - ReadWriteMany # Multiple pods need access
+  resources:
+    requests:
+      storage: 50Gi
+
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: training-data
+  namespace: training-system
+spec:
+  accessModes:
+    - ReadOnlyMany # Workers read from this
+  resources:
+    requests:
+      storage: 20Gi
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: coordinator
+  namespace: training-system
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: coordinator
+  template:
+    metadata:
+      labels:
+        app: coordinator
+    spec:
+      serviceAccountName: coordinator
+      containers:
+        - name: coordinator
+          image: distributed-training-system:coordinator
+          imagePullPolicy: Never # For local testing
+          env:
+            - name: JOB_ID
+              value: "k8s-job"
+            - name: WORLD_SIZE
+              valueFrom:
+                configMapKeyRef:
+                  name: training-config
+                  key: WORLD_SIZE
+            - name: CHECKPOINT_DIR
+              valueFrom:
+                configMapKeyRef:
+                  name: training-config
+                  key: CHECKPOINT_DIR
+            - name: CHECKPOINT_EVERY
+              valueFrom:
+                configMapKeyRef:
+                  name: training-config
+                  key: CHECKPOINT_EVERY
+            - name: SLEEP_SEC
+              valueFrom:
+                configMapKeyRef:
+                  name: training-config
+                  key: SLEEP_SEC
+            - name: DATASET_DIR
+              valueFrom:
+                configMapKeyRef:
+                  name: training-config
+                  key: DATASET_DIR
+            - name: USE_S3
+              valueFrom:
+                configMapKeyRef:
+                  name: training-config
+                  key: USE_S3
+            - name: S3_ENDPOINT
+              valueFrom:
+                secretKeyRef:
+                  name: s3-credentials
+                  key: S3_ENDPOINT
+            - name: S3_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: s3-credentials
+                  key: S3_ACCESS_KEY
+            - name: S3_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: s3-credentials
+                  key: S3_SECRET_KEY
+            - name: S3_BUCKET
+              valueFrom:
+                configMapKeyRef:
+                  name: training-config
+                  key: S3_BUCKET
+          volumeMounts:
+            - name: checkpoints
+              mountPath: /checkpoints
+            - name: data
+              mountPath: /data
+              readOnly: true
+          resources:
+            requests:
+              cpu: "500m"
+              memory: "512Mi"
+            limits:
+              cpu: "2"
+              memory: "2Gi"
+
+      volumes:
+        - name: checkpoints
+          persistentVolumeClaim:
+            claimName: checkpoints
+        - name: data
+          persistentVolumeClaim:
+            claimName: training-data
+
+---
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: coordinator
+  namespace: training-system
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: coordinator
+rules:
+  - apiGroups: [""]
+    resources: ["pods"]
+    verbs: ["get", "list", "watch"]
+  - apiGroups: [""]
+    resources: ["pods/log"]
+    verbs: ["get"]
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: coordinator
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: coordinator
+subjects:
+  - kind: ServiceAccount
+    name: coordinator
+    namespace: training-system

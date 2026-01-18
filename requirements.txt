@@ -3,3 +3,4 @@ uvicorn
 pydantic
 sse-starlette
 psutil
+boto3

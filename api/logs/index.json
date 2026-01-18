@@ -13,7 +13,9 @@
       },
       "exit_code": 0,
       "finished_at": 1768189121.1991613,
-      "exit_reason": "completed_marker"
+      "exit_reason": "completed_marker",
+      "status": "COMPLETED",
+      "ended_at": 1768696127.5003572
     },
     "job-e73ff536": {
       "job_id": "job-e73ff536",
@@ -28,7 +30,9 @@
       },
       "exit_code": 0,
       "finished_at": 1768189121.2111325,
-      "exit_reason": "completed_marker"
+      "exit_reason": "completed_marker",
+      "status": "COMPLETED",
+      "ended_at": 1768695760.214533
     },
     "job-0809541d": {
       "job_id": "job-0809541d",
@@ -44,7 +48,9 @@
       },
       "exit_code": 0,
       "finished_at": 1768189121.2214677,
-      "exit_reason": "completed_marker"
+      "exit_reason": "completed_marker",
+      "status": "COMPLETED",
+      "ended_at": 1768695760.236233
     },
     "job-7416fe09": {
       "job_id": "job-7416fe09",
@@ -60,7 +66,9 @@
       },
       "exit_code": 0,
       "finished_at": 1768189121.2317824,
-      "exit_reason": "completed_marker"
+      "exit_reason": "completed_marker",
+      "status": "COMPLETED",
+      "ended_at": 1768695760.2590272
     },
     "job-6af7dbb2": {
       "job_id": "job-6af7dbb2",
@@ -74,9 +82,11 @@
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
       },
-      "exit_code": 1,
+      "exit_code": null,
       "finished_at": 1768189121.2436812,
-      "exit_reason": "python_traceback"
+      "exit_reason": "python_traceback",
+      "status": "FAILED",
+      "ended_at": 1768695760.277899
     },
     "job-cb3f2279": {
       "job_id": "job-cb3f2279",
@@ -90,9 +100,11 @@
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
       },
-      "exit_code": 1,
+      "exit_code": null,
       "finished_at": 1768189121.2566938,
-      "exit_reason": "python_traceback"
+      "exit_reason": "python_traceback",
+      "status": "FAILED",
+      "ended_at": 1768695760.2955523
     },
     "job-56f84553": {
       "job_id": "job-56f84553",
@@ -106,9 +118,11 @@
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
       },
-      "exit_code": 1,
+      "exit_code": null,
       "finished_at": 1768189121.2686965,
-      "exit_reason": "python_traceback"
+      "exit_reason": "python_traceback",
+      "status": "FAILED",
+      "ended_at": 1768695760.3157542
     },
     "job-c9270a42": {
       "job_id": "job-c9270a42",
@@ -124,7 +138,9 @@
       },
       "exit_code": 0,
       "finished_at": 1768189121.2815578,
-      "exit_reason": "completed_marker"
+      "exit_reason": "completed_marker",
+      "status": "COMPLETED",
+      "ended_at": 1768695760.3349297
     },
     "job-dfcb3b4a": {
       "job_id": "job-dfcb3b4a",
@@ -140,7 +156,9 @@
       },
       "exit_code": 0,
       "finished_at": 1768189121.291265,
-      "exit_reason": "completed_marker"
+      "exit_reason": "completed_marker",
+      "status": "COMPLETED",
+      "ended_at": 1768695760.353017
     },
     "job-7d3cd170": {
       "job_id": "job-7d3cd170",
@@ -156,7 +174,9 @@
       },
       "exit_code": 0,
       "finished_at": 1768189121.3002658,
-      "exit_reason": "completed_marker"
+      "exit_reason": "completed_marker",
+      "status": "COMPLETED",
+      "ended_at": 1768695760.3738182
     },
     "job-c6ac59c5": {
       "job_id": "job-c6ac59c5",
@@ -172,7 +192,9 @@
       },
       "exit_code": 0,
       "finished_at": 1768189121.3126557,
-      "exit_reason": "completed_marker"
+      "exit_reason": "completed_marker",
+      "status": "COMPLETED",
+      "ended_at": 1768695760.3964443
     },
     "job-1f2a09cf": {
       "job_id": "job-1f2a09cf",
@@ -188,7 +210,9 @@
       },
       "exit_code": 0,
       "finished_at": 1768189121.3249688,
-      "exit_reason": "completed_marker"
+      "exit_reason": "completed_marker",
+      "status": "COMPLETED",
+      "ended_at": 1768695760.4165182
     },
     "job-53b7d90f": {
       "job_id": "job-53b7d90f",
@@ -204,7 +228,9 @@
       },
       "exit_code": 0,
       "finished_at": 1768189121.3356419,
-      "exit_reason": "completed_marker"
+      "exit_reason": "completed_marker",
+      "status": "COMPLETED",
+      "ended_at": 1768695760.4387827
     },
     "job-040a25a8": {
       "job_id": "job-040a25a8",
@@ -220,7 +246,9 @@
       },
       "exit_code": 0,
       "finished_at": 1768189121.3457608,
-      "exit_reason": "completed_marker"
+      "exit_reason": "completed_marker",
+      "status": "COMPLETED",
+      "ended_at": 1768695760.462991
     },
     "job-36ece9e1": {
       "job_id": "job-36ece9e1",
@@ -233,7 +261,10 @@
         "SLEEP_SEC": "0.5",
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
-      }
+      },
+      "status": "FAILED",
+      "exit_code": null,
+      "ended_at": 1768695760.4880836
     },
     "job-6b878545": {
       "job_id": "job-6b878545",
@@ -246,7 +277,10 @@
         "SLEEP_SEC": "0.5",
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
-      }
+      },
+      "status": "FAILED",
+      "exit_code": null,
+      "ended_at": 1768695760.5091958
     },
     "job-4905408e": {
       "job_id": "job-4905408e",
@@ -278,7 +312,9 @@
       },
       "exit_code": 0,
       "finished_at": 1768189121.3667097,
-      "exit_reason": "completed_marker"
+      "exit_reason": "completed_marker",
+      "status": "COMPLETED",
+      "ended_at": 1768695760.5365806
     },
     "job-11052453": {
       "job_id": "job-11052453",
@@ -294,7 +330,9 @@
       },
       "exit_code": 0,
       "finished_at": 1768189121.3790493,
-      "exit_reason": "completed_marker"
+      "exit_reason": "completed_marker",
+      "status": "COMPLETED",
+      "ended_at": 1768695760.5551822
     },
     "job-3484cb3c": {
       "job_id": "job-3484cb3c",
@@ -310,7 +348,9 @@
       },
       "exit_code": 0,
       "finished_at": 1768108425.0896578,
-      "exit_reason": "completed_marker"
+      "exit_reason": "completed_marker",
+      "status": "COMPLETED",
+      "ended_at": 1768695760.5744023
     },
     "job-5e7c9bb5": {
       "job_id": "job-5e7c9bb5",
@@ -326,7 +366,9 @@
       },
       "exit_code": 0,
       "finished_at": 1768189493.0436072,
-      "exit_reason": "completed_marker"
+      "exit_reason": "completed_marker",
+      "status": "COMPLETED",
+      "ended_at": 1768695760.594217
     },
     "job-e921e83f": {
       "job_id": "job-e921e83f",
@@ -339,7 +381,10 @@
         "SLEEP_SEC": "1.0",
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
-      }
+      },
+      "status": "COMPLETED",
+      "exit_code": 0,
+      "ended_at": 1768695760.6132386
     },
     "job-c1e26bc8": {
       "job_id": "job-c1e26bc8",
@@ -353,9 +398,25 @@
         "DATASET_DIR": "./data/shards",
         "CHECKPOINT_DIR": "./checkpoints"
       },
-      "status": "RUNNING",
-      "exit_code": null,
-      "ended_at": null
+      "status": "COMPLETED",
+      "exit_code": 0,
+      "ended_at": 1768695760.6404264
+    },
+    "job-bf697e68": {
+      "job_id": "job-bf697e68",
+      "pid": 26464,
+      "log_path": "C:\\Users\\mevan\\Desktop\\Projects\\distributed-training-system\\api\\logs\\job-bf697e68.log",
+      "created_at": 1768695301.6546667,
+      "env": {
+        "WORLD_SIZE": "4",
+        "CHECKPOINT_EVERY": "5",
+        "SLEEP_SEC": "0.5",
+        "DATASET_DIR": "./data/shards",
+        "CHECKPOINT_DIR": "./checkpoints"
+      },
+      "status": "COMPLETED",
+      "exit_code": 0,
+      "ended_at": 1768695760.6657233
     }
   }
 }
