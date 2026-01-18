@@ -221,12 +221,6 @@ Back to training
 - `k8s/03-coordinator.yaml` - NEW
 - `k8s/04-api.yaml` - NEW
 
-**Documentation:**
-- `QUICKSTART.md` - NEW
-- `BUILD_DEPLOY.md` - NEW
-- `IMPLEMENTATION.md` - NEW
-- `validate.py` - NEW
-
 ## 🎓 What You Learned
 
 This system demonstrates:
@@ -258,14 +252,3 @@ This system demonstrates:
 - ✅ Rust coordinator ready
 - ✅ Docker images defined
 - ✅ K8s manifests ready
-- ⚠️ Local testing only (single coordinator)
-- 🔲 Multi-coordinator HA (future)
-- 🔲 Distributed checkpointing (future)
-
-## 📝 License
-
-[Add your license here]
-
-## 🤝 Contributing
-
-[Add contribution guidelines here]
