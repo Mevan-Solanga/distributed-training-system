@@ -8,7 +8,6 @@ Coordinates distributed training across multiple workers with:
 - **Automatic failure detection & recovery** via heartbeat monitoring
 - **Deterministic shard assignment** for consistent data distribution  
 - **Atomic checkpointing** with recovery from latest checkpoint
-- **Optional S3/MinIO support** for cloud object storage
 - **REST API** for job submission and monitoring
 - **Kubernetes-ready** with manifests and RBAC
 
@@ -73,11 +72,6 @@ kubectl port-forward -n training-system svc/api 8000:8000
 curl http://localhost:8000/health
 ```
 
-## 📚 Documentation
-
-- **[QUICKSTART.md](QUICKSTART.md)** - Get up and running in 5 minutes
-- **[BUILD_DEPLOY.md](BUILD_DEPLOY.md)** - Complete build & deployment guide
-- **[IMPLEMENTATION.md](IMPLEMENTATION.md)** - What was built and how
 
 ## 🔑 Key Features
 
@@ -203,23 +197,23 @@ Back to training
 - `api/job_manager.py` - Added `summary()`, `list_summaries()`, `purge()`
 - `api/main.py` - Now fully functional
 - `demo/worker.py` - Added heartbeat, atomic checkpoints, S3 support
-- `demo/s3_utils.py` - NEW: S3/MinIO utilities
+- `demo/s3_utils.py` : S3/MinIO utilities
 
 **Rust:**
-- `coordinator/src/main.rs` - NEW: Production coordinator
-- `coordinator/Cargo.toml` - NEW: Rust dependencies
+- `coordinator/src/main.rs` : Production coordinator
+- `coordinator/Cargo.toml` : Rust dependencies
 
 **Docker:**
-- `Dockerfile.worker` - NEW
-- `Dockerfile.api` - NEW
-- `Dockerfile.coordinator` - NEW
-- `docker-compose.yml` - NEW
+- `Dockerfile.worker` 
+- `Dockerfile.api` 
+- `Dockerfile.coordinator` 
+- `docker-compose.yml` 
 
 **Kubernetes:**
-- `k8s/01-namespace-config.yaml` - NEW
-- `k8s/02-minio.yaml` - NEW
-- `k8s/03-coordinator.yaml` - NEW
-- `k8s/04-api.yaml` - NEW
+- `k8s/01-namespace-config.yaml` 
+- `k8s/02-minio.yaml` 
+- `k8s/03-coordinator.yaml`
+- `k8s/04-api.yaml`
 
 ## 🎓 What You Learned
 
