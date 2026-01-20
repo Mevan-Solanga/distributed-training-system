@@ -13,6 +13,9 @@ try:
 except ImportError:
     HAS_S3 = False
 
+# Import training module
+from demo.training import FakeModel, FakeOptimizer, train_step
+
 # ---------- CONFIG ----------
 JOB_ID = os.getenv("JOB_ID", "demo-job")
 RANK = int(os.getenv("RANK", "0"))
@@ -32,7 +35,14 @@ HEARTBEAT_FILE = JOB_DIR / "HEARTBEAT"
 
 def load_checkpoint():
     if not LATEST_FILE.exists():
-        return {"step": 0, "rank": RANK, "world_size": WORLD_SIZE, "shard_idx": 0, "line_idx": 0}
+        return {
+            "step": 0,
+            "rank": RANK,
+            "world_size": WORLD_SIZE,
+            "shard_idx": 0,
+            "line_idx": 0,
+            "model_state": None,
+        }
 
     step_dir = LATEST_FILE.read_text().strip()
     state_path = JOB_DIR / step_dir / "state.json"
@@ -49,6 +59,7 @@ def load_checkpoint():
     state.setdefault("world_size", WORLD_SIZE)
     state.setdefault("shard_idx", 0)
     state.setdefault("line_idx", 0)
+    state.setdefault("model_state", None)
 
     return state
 
@@ -155,6 +166,16 @@ def main():
     if not shards:
         print(f"[worker {RANK}] no shards assigned. Exiting.")
         return
+    
+    # Initialize model and optimizer
+    model = FakeModel(input_size=10, hidden_size=64, output_size=1)
+    optimizer = FakeOptimizer(model, learning_rate=0.001)
+    
+    # Load model state from checkpoint if available
+    if state.get("model_state"):
+        print(f"[worker {RANK}] loading model state from checkpoint")
+        model.load_state_dict(state["model_state"])
+        print(f"[worker {RANK}] model loaded with {len(model.loss_history)} loss history entries")
 
     # Clamp resume values
     state["shard_idx"] = min(int(state.get("shard_idx", 0)), len(shards) - 1)
@@ -195,13 +216,19 @@ def main():
                 state["line_idx"] += 1
 
                 sample = line.strip()
+                
+                # Execute ML training step
+                loss = train_step(model, optimizer, batch_size=32)
+                
                 print(
-                    f"[worker {RANK}] step {state['step']} | {sample} "
+                    f"[worker {RANK}] step {state['step']} | loss {loss:.4f} | {sample} "
                     f"| (si={state['shard_idx']} li={state['line_idx']})"
                 )
 
                 if state["step"] % CHECKPOINT_EVERY == 0:
-                    print(f"[worker {RANK}] checkpointing at step {state['step']}")
+                    # Save model state to checkpoint
+                    state["model_state"] = model.state_dict()
+                    print(f"[worker {RANK}] checkpointing at step {state['step']} (loss: {loss:.4f})")
                     save_checkpoint(state)
 
     print(f"[worker {RANK}] finished all assigned shards. Exiting.")
